@@ -1,6 +1,6 @@
 # ASP.NET Core Microservices
 
-A Dockerized microservices project built with **ASP.NET Core, C#, PostgreSQL, Redis, Entity Framework Core, YARP, and Docker Compose**.
+A Dockerized microservices project built with **ASP.NET Core, C#, PostgreSQL, Redis, Entity Framework Core, YARP (API GATEWAY), and Docker Compose**.
 
 The project demonstrates a simple microservices architecture with an API Gateway, independent services, persistent storage, and distributed caching.
 
