@@ -1,0 +1,53 @@
+services:
+
+  postgres:
+    image: postgres:17
+    container_name: microservices-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:latest
+    container_name: microservices-redis
+    ports:
+      - "6379:6379"
+
+  nameservice:
+    build:
+      context: ./NameService
+    container_name: nameservice
+    ports:
+      - "5219:8080"
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}"
+      Redis__ConnectionString: "redis:6379"
+    depends_on:
+      - postgres
+      - redis
+
+  calculatorservice:
+    build:
+      context: ./Calculator
+    container_name: calculatorservice
+    ports:
+      - "5278:8080"
+    
+  apigateway:
+    build:
+      context: ./ApiGateway
+    container_name: apigateway
+    ports:
+      - "5132:8080"
+    depends_on:
+      - nameservice
+      - calculatorservice
+volumes:
+  postgres_data:
+
+  
